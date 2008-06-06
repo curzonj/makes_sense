@@ -1,0 +1,12 @@
+In your config/deploy.rb file put:
+
+require 'vendor/plugins/makes_sense/recipes'
+
+then you can put:
+
+load 'make_sense/<anything mod you want>'
+
+which will load from vendor/plugins/makes_sense/recipes/makes_sense/*.rb.
+The modules with auto-register callbacks on the relevant cap tasks. Look
+in the modules to see exactly what it does.
+
