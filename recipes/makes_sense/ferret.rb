@@ -7,7 +7,11 @@ namespace :ferret do
   task :rebuild, :roles => :db do
     run_rake "ferret:rebuild"
   end
+
+  task :reindex, :roles => :db do
+    run_rake "ferret:reindex"
+  end
 end
 
-before "deploy:restart", "ferret:restart"
+before "deploy:restart", "ferret:rebuild"
 
