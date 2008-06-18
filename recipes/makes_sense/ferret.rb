@@ -4,6 +4,14 @@ namespace :ferret do
     run_rake "ferret:restart"
   end
 
+  task :start, :roles => :db do
+    run_rake "ferret:start"
+  end
+
+  task :stop, :roles => :db do
+    run_rake "ferret:stop"
+  end
+
   task :rebuild, :roles => :db do
     run_rake "ferret:rebuild"
   end
@@ -13,5 +21,6 @@ namespace :ferret do
   end
 end
 
-before "deploy:restart", "ferret:rebuild"
+before "deploy:symlink", "ferret:stop"
+after "deploy:symlink", "ferret:start"
 
