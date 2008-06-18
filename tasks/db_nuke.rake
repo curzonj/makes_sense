@@ -3,7 +3,7 @@ namespace :db do
     abcs = ActiveRecord::Base.configurations
     ["development", "test"].each do |db|
       case abcs[db]["adapter"]
-        when "oci"
+        when "oci", "oracle"
           ActiveRecord::Base.establish_connection(db.to_sym)
           conn = ActiveRecord::Base.connection
           conn.begin_db_transaction
