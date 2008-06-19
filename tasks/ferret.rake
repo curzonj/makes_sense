@@ -1,10 +1,12 @@
-ENV['FERRET_USE_LOCAL_INDEX'] = 'true'
-
 namespace :ferret do
   task :reindex => :load_models do
     ModelLoading.models.each do |model|
       model.rebuild_index if model.respond_to?(:aaf_configuration)
     end
+  end
+
+  task :local_index do
+    ENV['FERRET_USE_LOCAL_INDEX'] = 'true'
   end
 
   task :load_models => :environment do
@@ -26,7 +28,7 @@ namespace :ferret do
     end
   end
 
-  task :start => :load_models do
+  task :start => [ :local_index, :load_models ] do
     ActsAsFerret::Remote::Server.new.send('start')
   end
 
