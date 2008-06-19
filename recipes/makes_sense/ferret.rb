@@ -12,10 +12,6 @@ namespace :ferret do
     run_rake "ferret:stop"
   end
 
-  task :rebuild, :roles => :db do
-    run_rake "ferret:rebuild"
-  end
-
   task :reindex, :roles => :db do
     run_rake "ferret:reindex"
   end

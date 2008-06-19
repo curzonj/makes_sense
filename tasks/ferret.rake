@@ -33,5 +33,4 @@ namespace :ferret do
   end
 
   task :restart => [ :stop, :start ]
-  task :rebuild => [ :stop, :reindex, :start ]
 end
