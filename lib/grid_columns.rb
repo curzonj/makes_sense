@@ -22,14 +22,9 @@ module ActiveRecord
       cattr_accessor :_grid_columns
       self._grid_columns = cols
       if self.respond_to?(:aaf_configuration)
+        set = {}
+        cols << :id
 
-        set = {
-         :id_sort => {
-            :store => :yes,
-            :index       => :untokenized_omit_norms,
-            :term_vector => :with_positions_offsets
-          }
-        }
         cols.each do |c|
           c = c.is_a?(Symbol) ? c : c.intern
 
@@ -41,11 +36,19 @@ module ActiveRecord
             end
           end
 
-          set[c] = {
-            :store => :yes,
-            :index       => :omit_norms,
-            :term_vector => :with_positions_offsets
-          }
+          unless :id == c
+            # ferret auto adds the :id column and complains if
+            # we try and do it, other columns can be added here
+            # even if ferret adds them too (db columns) because
+            # it gets merged before the c code that complains
+            # about duplicates
+            set[c] = {
+              :store => :yes,
+              :index       => :omit_norms,
+              :term_vector => :with_positions_offsets
+            }
+          end
+
           set["#{c}_sort".intern] = {
             :store => :yes,
             :index       => :untokenized_omit_norms,
