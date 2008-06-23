@@ -1,10 +1,10 @@
-module ActiveRecord
-  class Base
-    def self.derived_attributes(*cols)
+module MakesSense
+  module GridColumns
+    def derived_attributes(*cols)
       cattr_accessor :_derived_attributes
       self._derived_attributes = cols
     end
-    def self.sort_type(attribute, type=nil)
+    def sort_type(attribute, type=nil)
       @ferret_sort_types ||= {}
 
       if type.nil?
@@ -18,7 +18,7 @@ module ActiveRecord
         @ferret_sort_types[attribute.to_s] = type
       end
     end
-    def self.grid_columns(*cols)
+    def grid_columns(*cols)
       cattr_accessor :_grid_columns
       self._grid_columns = cols
       if self.respond_to?(:aaf_configuration)
@@ -64,3 +64,5 @@ module ActiveRecord
     end
   end
 end
+
+ActiveRecord::Base.extend MakesSense::GridColumns
