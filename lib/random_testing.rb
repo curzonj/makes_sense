@@ -28,11 +28,14 @@ class Range
   def times(&block)
     list = []
 
-    self.to_a.rand.times do
+    self.rand.times do
       list << block.call()
     end
 
     list
+  end
+  def rand
+    self.to_a.rand
   end
 end
 
@@ -98,15 +101,18 @@ module ActiveRecord
 
         if @minimum_example_blk
           values = @minimum_example_blk.call(attributes)
-          attributes = values.merge(attributes) if values.is_a?(Hash)
+          attributes.reverse_merge!(values) if values.is_a?(Hash)
         end
 
-        obj = self.new(attributes)
+        obj = self.new(attributes.dup)
         obj.save! unless save === false
 
         if @full && @optional_example_blk
           values = @optional_example_blk.call(obj)
-          obj.attributes= values.merge(attributes) if values.is_a?(Hash)
+
+          attributes.reverse_merge!(values) if values.is_a?(Hash)
+
+          obj.attributes = attributes
           obj.save!
         end
 
