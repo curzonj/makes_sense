@@ -2,7 +2,10 @@ module MakesSense
   module GridColumns
     def derived_attributes(*cols)
       cattr_accessor :_derived_attributes
-      self._derived_attributes = cols
+      self._derived_attributes ||= []
+
+      self._derived_attributes << cols
+      self._derived_attributes.flatten!
     end
     def sort_type(attribute, type=nil)
       @ferret_sort_types ||= {}
@@ -20,7 +23,11 @@ module MakesSense
     end
     def grid_columns(*cols)
       cattr_accessor :_grid_columns
-      self._grid_columns = cols
+      self._grid_columns ||= []
+
+      self._grid_columns << cols
+      self._grid_columns.flatten!
+
       if self.respond_to?(:aaf_configuration)
         set = {}
         cols << :id

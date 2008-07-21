@@ -10,6 +10,24 @@ class JSLint
     output.match('No problems found') ? true : output
   end
 
+  def self.retest(pattern)
+    failed = false
+
+    Dir["#{RAILS_ROOT}/**/*.js"].each do |file|
+      unless failed || !File.basename(file).match(pattern)
+        puts "Testing #{file}"
+        output = self.test(file)
+        if output != true
+          puts output
+          failed = true
+        end
+      end
+    end
+
+    return !failed
+  end
+
+
   def self.test_path(path_spec)
     failed = false
 
