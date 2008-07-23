@@ -1,9 +1,10 @@
 namespace :ferret do
   task :reindex => :load_models do
     ModelLoading.models.each do |model|
-      if model.base_class == model
-        # Subclasses don't need to be reindexed, only the parent
-        model.rebuild_index if model.respond_to?(:aaf_configuration)
+      if model.respond_to?(:aaf_configuration) &&
+         model.aaf_configuration[:class_name] == model.name
+
+        model.rebuild_index if 
       end
     end
   end
