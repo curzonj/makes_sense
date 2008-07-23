@@ -4,7 +4,7 @@ namespace :ferret do
       if model.respond_to?(:aaf_configuration) &&
          model.aaf_configuration[:class_name] == model.name
 
-        model.rebuild_index if 
+        model.rebuild_index
       end
     end
   end
