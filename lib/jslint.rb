@@ -28,12 +28,12 @@ class JSLint
   end
 
 
-  def self.test_path(path_spec)
+  def self.test_path(path_spec, ignore_list=[])
     failed = false
 
     javascript_path = File.join(RAILS_ROOT, path_spec)
     Dir["#{javascript_path}/*.js"].each do |file|
-      unless failed
+      unless failed or ignore_list.include?(File.basename(file))
         puts "Testing #{file}"
         output = self.test(file)
         if output != true
